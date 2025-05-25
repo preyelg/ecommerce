@@ -53,16 +53,18 @@ module "eks" {
     }
   }
 
-  map_users = [
-    {
-      userarn  = "arn:aws:iam::207567759296:user/preye_aws"
-      username = "preye_aws"
-      groups   = ["system:masters"]
+  access_entries = {
+    preye_user = {
+      principal_arn      = "arn:aws:iam::207567759296:user/preye_aws"
+      type               = "user"
+      username           = "preye_aws"
+      kubernetes_groups  = ["system:masters"]
     }
-  ]
+  }
 
   tags = {
     Environment = "dev"
     Terraform   = "True"
   }
 }
+
