@@ -56,7 +56,7 @@ module "eks" {
   access_entries = {
     preye_user = {
       principal_arn      = "arn:aws:iam::207567759296:user/preye_aws"
-      type               = "user"
+      type               = "STANDARD"
       username           = "preye_aws"
       kubernetes_groups  = ["system:masters"]
     }
