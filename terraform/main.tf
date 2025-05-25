@@ -1,3 +1,12 @@
+terraform {
+  required_providers {
+    aws = {
+      source  = "hashicorp/aws"
+      version = "~> 5.0"
+    }
+  }
+}
+
 provider "aws" {
   region = var.aws_region
 }
@@ -6,15 +15,14 @@ module "vpc" {
   source  = "terraform-aws-modules/vpc/aws"
   version = "5.1.1"
 
-  name = "${var.cluster_name}-vpc"
-  cidr = var.vpc_cidr
-
+  name            = "${var.cluster_name}-vpc"
+  cidr            = var.vpc_cidr
   azs             = ["us-east-2a", "us-east-2b"]
   public_subnets  = var.public_subnets
   private_subnets = var.private_subnets
 
-  enable_nat_gateway = true
-  single_nat_gateway = true
+  enable_nat_gateway     = true
+  single_nat_gateway     = true
 
   tags = {
     "kubernetes.io/cluster/${var.cluster_name}" = "shared"
@@ -27,8 +35,9 @@ module "eks" {
 
   cluster_name    = var.cluster_name
   cluster_version = "1.29"
-  subnet_ids      = module.vpc.private_subnets
-  vpc_id          = module.vpc.vpc_id
+
+  subnet_ids = module.vpc.private_subnets
+  vpc_id     = module.vpc.vpc_id
 
   enable_irsa = true
 
@@ -40,13 +49,20 @@ module "eks" {
 
       instance_types = ["t3.medium"]
       subnet_ids     = module.vpc.private_subnets
-
-      key_name = var.key_pair_name
+      key_name       = var.key_pair_name
     }
   }
 
+  map_users = [
+    {
+      userarn  = "arn:aws:iam::207567759296:user/preye_aws"
+      username = "preye_aws"
+      groups   = ["system:masters"]
+    }
+  ]
+
   tags = {
     Environment = "dev"
-    Terraform   = "true"
+    Terraform   = "True"
   }
 }
