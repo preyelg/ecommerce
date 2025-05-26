@@ -44,9 +44,6 @@ module "eks" {
   cluster_endpoint_public_access  = true
   cluster_endpoint_private_access = false
 
-  manage_node_group_iam_resources = false
-  node_group_iam_role_arn         = aws_iam_role.eks_node_group_role.arn
-
   eks_managed_node_groups = {
     default = {
       desired_capacity = 2
