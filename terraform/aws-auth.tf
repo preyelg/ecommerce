@@ -13,7 +13,7 @@ resource "kubernetes_config_map" "aws_auth" {
       {
         userarn  = "arn:aws:iam::207567759296:user/preye_aws"
         username = "preye_aws"
-        groups   = ["system:masters"]
+        groups   = ["eks-admins"]
       }
     ])
   }
