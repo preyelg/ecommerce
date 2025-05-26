@@ -58,7 +58,7 @@ module "eks" {
       principal_arn      = "arn:aws:iam::207567759296:user/preye_aws"
       type               = "STANDARD"
       username           = "preye_aws"
-      kubernetes_groups  = ["system:masters"]
+      kubernetes_groups  = ["eks-admins"]
     }
   }
 
