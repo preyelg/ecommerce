@@ -30,8 +30,8 @@ module "vpc" {
 }
 
 module "eks" {
-  source  = "terraform-aws-modules/eks/aws"
-  version = "20.4.0"
+  source          = "terraform-aws-modules/eks/aws"
+  version         = "20.4.0"
 
   cluster_name    = var.cluster_name
   cluster_version = "1.29"
@@ -40,8 +40,12 @@ module "eks" {
   vpc_id     = module.vpc.vpc_id
 
   enable_irsa = true
+
   cluster_endpoint_public_access  = true
   cluster_endpoint_private_access = false
+
+  manage_node_group_iam_resources = false
+  node_group_iam_role_arn         = aws_iam_role.eks_node_group_role.arn
 
   eks_managed_node_groups = {
     default = {
@@ -57,10 +61,10 @@ module "eks" {
 
   access_entries = {
     preye_user = {
-      principal_arn      = "arn:aws:iam::207567759296:user/preye_aws"
-      type               = "STANDARD"
-      username           = "preye_aws"
-      kubernetes_groups  = ["eks-admins"]
+      principal_arn     = "arn:aws:iam::207567759296:user/preye_aws"
+      type              = "STANDARD"
+      username          = "preye_aws"
+      kubernetes_groups = ["eks-admins"]
     }
   }
 
@@ -69,4 +73,5 @@ module "eks" {
     Terraform   = "True"
   }
 }
+
 

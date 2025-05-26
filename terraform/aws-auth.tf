@@ -1,7 +1,3 @@
-provider "kubernetes" {
-  config_path = "~/.kube/config"
-}
-
 resource "kubernetes_config_map" "aws_auth" {
   metadata {
     name      = "aws-auth"
@@ -17,4 +13,9 @@ resource "kubernetes_config_map" "aws_auth" {
       }
     ])
   }
+
+  depends_on = [
+    module.eks.aws_eks_cluster,
+    module.eks.aws_eks_node_group
+  ]
 }
